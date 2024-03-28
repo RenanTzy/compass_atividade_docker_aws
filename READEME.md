@@ -23,3 +23,13 @@
 - Utilizar repositório git para versionamento;
 - Criar documentação
 ---
+### Criando o Load Balancer
+- No serviço de EC2, entre no serviço de 'Load Balancer' no painel lateral.
+-  Clique em 'Create Load Balancer'.
+-  Selecione o tipo 'Classic Load Balancer' e prossiga para a configuração básica do load balance:
+	- Name: Nome do load balance.
+	- Schema: Voltado para a internet (Internet-facing).
+	- Network: Selecionar a VPC e as zonas de disponibilidade.
+	- Security Group: Selecionar um grupo de segurança com tráfego HTTP liberado.
+	Ao concluir a configuração, será possível ver o DNS Name nos detalhes do load balance, usado para acessar as instâncias.
+	
