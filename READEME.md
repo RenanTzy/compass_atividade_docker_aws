@@ -46,3 +46,8 @@
 	- Em ```Avaliable Zone``` ```escolha no preference```.
 	- Em ```Aditional configuration``` verifique se a porta de comunicação é a 3306.
 - Clique em create data base.
+### Criando o Elastic File System
+- No serviço ```EFS da amazon```,  ```clique em create file system``` e em ```Customize```.
+- Selecione o nome do sistema de arquivos e cloque em ```next```.
+- Em network adicionaremos o grupo de segurança, com o trafego do protocolo nfs liberado para cada zona de disponibilidades.
+- Clique em ```next``` até a etapa 4 para criar o efs.
