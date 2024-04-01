@@ -32,4 +32,17 @@
 	- Network: Selecionar a VPC e as zonas de disponibilidade.
 	- Security Group: Selecionar um grupo de segurança com tráfego HTTP liberado.
 	Ao concluir a configuração, será possível ver o DNS Name nos detalhes do load balance, usado para acessar as instâncias.
-	
+### Criando o Bando de Dados RDS
+- No serviço ```Amazon RDS```, clique em ```create new database```.
+- Selecione a opção ```Standard create``` para fazer as configurações manualmente.
+- Selecione o  banco de dado ```Mysql``` .
+- Selecione o template ```Free Tier```.
+- Em ```Setting``` será definodo as configurações do banco de dados:
+	- BD instance identifier: ```Nome do banco de dados```.
+	- Master username: ```Nome de usuario```.
+	- Master password: ```Senha do banco de dados```.
+- Em ```Connectivity``` marque a opção ```Don´t connect to an EC2 compute resource```.
+	- Selecione a vpc em que o banco de dados será criado.
+	- Em ```Avaliable Zone``` ```escolha no preference```.
+	- Em ```Aditional configuration``` verifique se a porta de comunicação é a 3306.
+- Clique em create data base.
