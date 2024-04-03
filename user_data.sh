@@ -40,5 +40,4 @@ services:
       WORDPRESS_TABLE_PREFIX: wp_
 EOF
 
-sudo yum update
-sudo docker-compose -f ~/docker-compose.yml up -d
+sudo docker-compose -f /home/ec2-user/docker-compose.yml up -d
