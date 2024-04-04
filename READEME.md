@@ -1,6 +1,6 @@
 # compass_atividade_docker_aws 
 
-**Objetivo:** 
+**Objetivo:** Atividade consiste em criar a tipologia entregue, onde será criada duas instancias com um contêiner do wordpress escaláveis em zonas diferentes, onde o serviço do wordpress seja acessado através do loadbalance.
 
 ---
 #### Requisitos da Atividade
@@ -60,7 +60,7 @@ No serviço de EC2 em ```Security Groups```no painel lateral crie os seguintes g
 	- Name: Nome do load balance.
 	- Schema: Voltado para a internet (Internet-facing).
 	- Network: Selecionar a VPC e as zonas de disponibilidade.
-	- Security Group: Selecionar um grupo de segurança com tráfego HTTP liberado.
+	- Security Group: Selecionar um grupo de segurança com tráfego HTTP liberado ```Sg-LoadBalance```.
 	Ao concluir a configuração, será possível ver o DNS Name nos detalhes do load balance, usado para acessar as instâncias.
 ### Criando o Bando de Dados RDS
 - No serviço ```Amazon RDS```, clique em ```create new database```.
@@ -72,14 +72,14 @@ No serviço de EC2 em ```Security Groups```no painel lateral crie os seguintes g
 	- Master username: ```Nome de usuario```.
 	- Master password: ```Senha do banco de dados```.
 - Em ```Connectivity``` marque a opção ```Don´t connect to an EC2 compute resource```.
-	- Selecione a vpc em que o banco de dados será criado.
+	- Selecione a vpc em que o banco de dados será criado e o grupo de segurança ```Sg-BancoRDS```.
 	- Em ```Avaliable Zone``` ```escolha no preference```.
 	- Em ```Aditional configuration``` verifique se a porta de comunicação é a 3306.
 - Clique em create data base.
 ### Criando o Elastic File System
 - No serviço ```EFS da amazon```,  ```clique em create file system``` e em ```Customize```.
 - Selecione o nome do sistema de arquivos e cloque em ```next```.
-- Em network adicionaremos o grupo de segurança, com o trafego do protocolo nfs liberado para cada zona de disponibilidades.
+- Em network adicionaremos o grupo de segurança ```Sg-EFS```, com o trafego do protocolo NFS liberado para cada zona de disponibilidades.
 - Clique em ```next``` até a etapa 4 para criar o efs.
 ### Criando o template
 -  No serviço de ```ec2```, no painel lateral clique em ```Launch Templates``` e em ```Create launch template```.
@@ -89,7 +89,7 @@ No serviço de EC2 em ```Security Groups```no painel lateral crie os seguintes g
 	- Arquitetura: ```64-bit```.
 	- Tipo de instancia: ```t3.small```.
 - Selecione uma chave de acesso ssh (Key pair) ou crie uma.
-- Selecione um grupo de segurança com acesso a ssh e http.
+- Selecione um grupo de segurança ```Sg-Instancias```.
 - Em ```Advanced details``` prossiga até a opção de user data para adicionar o script com a instalação e configuração do docker, docker compose e o efs da instancia. Faça as alterações de conexão ao banco de dados.
 
 ```sh
@@ -136,6 +136,13 @@ EOF
 sudo docker-compose -f /home/ec2-user/docker-compose.yml up -d
 ```
 ### Auto Scaling Group
+- No serviço de EC2, no painel lateral clique na seção ```Auto Scaling Group``` e clique em ```create auto scaling group```.
+- Selecione o nome do auto scaling e o template para a geração das instancias.
+- Selecione  a VPC criada e as suas subnets privadas.
+- Em Load balancing selecione ```Attach to an  existing load balance```.
+- Em Attach to an existing load balance, selecione a ```Choose from Classic Load Balancers```e o load balance criado.
+- Em heal checks marque a opção recomendada.
+- Em ```Group size``` selecione a quantidade desejada de instancias e em ```Scaling``` selecione a quantidade minima e máxima de instancias.
 ### Criando um Endpoint
 O endereço publico IPV4 não estará habilitado para a comunicação direta com a instancia, então será criado um endpoint para a comunicação interna da VPC.
 - No serviço de VPC, na seção ```Endpoint```, clique em ```Create endpoint```.
