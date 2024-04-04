@@ -23,6 +23,36 @@
 - Utilizar repositório git para versionamento;
 - Criar documentação
 ---
+### Criando a VPC
+-  No serviço de vpc, clique em ```Create VPC``` e selecione a opção ```VPC and more``` para exibir almas opções a mais.
+- Selecione o nome da vpc  e o bloco ipv4 que será criado para ela.
+- Selecione duas ```AZs``` (Zonas de disponibilidade).
+- Selecione duas subnets publicas e privadas.
+- Em ```ǸAT gateway``` selecione ```1 per AZ```.
+- Em ```VPC endpoints``` marque a opção none.
+### Criando os Security Groups
+No serviço de EC2 em ```Security Groups```no painel lateral crie os seguintes grupos.
+
+- **Sg-LoadBalance**
+	- Type: HTTP
+	- Protocol: TCP
+	- Port range: 80
+	- Source: 0.0.0.0/0 
+- **Sg-Intancias**
+	- Type: SSH
+	- Protocol: TCP
+	- Port range: 22
+	- Source: Sg-LoadBalance
+- **Sg-BancoRDS**
+	- Type: MYSQL/AURORA
+	- Protocol: TCP
+	- Port range: 3306
+	- Source: Sg-Instancias
+- **Sg-EFS**
+	- Type: NFS
+	- Protocol: TCP
+	- Port range: 2049
+	- Source: Sg-Instancias
 ### Criando o Load Balancer
 - No serviço de EC2, entre no serviço de 'Load Balancer' no painel lateral.
 -  Clique em 'Create Load Balancer'.
@@ -106,3 +136,11 @@ EOF
 sudo docker-compose -f /home/ec2-user/docker-compose.yml up -d
 ```
 ### Auto Scaling Group
+### Criando um Endpoint
+O endereço publico IPV4 não estará habilitado para a comunicação direta com a instancia, então será criado um endpoint para a comunicação interna da VPC.
+- No serviço de VPC, na seção ```Endpoint```, clique em ```Create endpoint```.
+- Selecione um nome ao endpoin (opcional).
+- Selecione a categoria ```EC2 Instance Connect Endpoint```
+- Selecione a VPC criada.
+- Selecione o grupo de segurança ```Sg-LoadBalancer```
+- Selecione qualquer uma das subnets privadas.
