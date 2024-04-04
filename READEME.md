@@ -151,3 +151,9 @@ O endereço publico IPV4 não estará habilitado para a comunicação direta com
 - Selecione a VPC criada.
 - Selecione o grupo de segurança ```Sg-LoadBalancer```
 - Selecione qualquer uma das subnets privadas.
+
+### Verificação
+- Terminando a configuração do auto scaliing, as instancias já devem ser criadas automaticamente, onde pode ser consultada no próprio serviço de EC2 para ver as instancias em execução.
+- No serviço do load balance ao clicar para ver os detelhes será possivel ver o endereço dns que será usado para acessa o serviço do wordpress pelo navegador.
+	- Ex: ```lb-atividade-wordpress-21104951.us-east-1.elb.amazonaws.com```
+- Na aba de ```Target Instances``` será possível ver se as instancias estão funcionando ou fora de serviço.
